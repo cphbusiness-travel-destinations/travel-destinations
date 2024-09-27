@@ -7,9 +7,9 @@ console.log(destinations);
 const destinationList = destinations.map(
   (destination) =>
     html` <div class="flex p-5">
-      <img class="size-3/12" src="images/thailand1.jpg" alt="" />
+      <img class="size-3/12" src="${destination.imageUrl}" alt="" />
       <div class="flex flex-col pl-4 size-3/6">
-        <h2 class="font-medium text-xl pb-2">Thailand</h2>
+        <h2 class="font-medium text-xl pb-2">${destination.country}</h2>
         <!-- <img class="size-3" src="images/352549_more_vert_iconfinder.svg" alt=""> -->
         <div class="flex gap-3 pl-1">
           <img
@@ -33,12 +33,11 @@ const destinationList = destinations.map(
         <p class="justify-start text-sm pt-2 pr-2">
           ${destination.description}
         </p>
-        <div class="flex justify-end p-2">
-          <!-- <button class="text-white bg-forestGreen pr-2 pl-2 p-1 rounded-xl w-fit">Learn more</button> -->
-        </div>
+        <div class="flex justify-end p-2"></div>
       </div>
     </div>`,
 );
+
 document.querySelector<HTMLDivElement>("#destination-list")!.innerHTML = html`
   ${destinationList}
 `;
