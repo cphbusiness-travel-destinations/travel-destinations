@@ -2,6 +2,7 @@ import express from "express";
 import {
   destinationModel,
   destinationSchemaValidator,
+  paramQueryValidator,
 } from "../../models/destination-model.js";
 import { logger } from "../../common/logger.js";
 import { ApiError } from "../../common/api-error.js";
@@ -11,9 +12,19 @@ export const destinationRouter = express.Router();
 
 destinationRouter.get("/destinations", async (_req, res, next) => {
   try {
+    const queryParams = paramQueryValidator.parse(_req.query);
     await connect();
-    const destinations = await destinationModel.find();
-
+    let destinations = [];
+    console.time();
+    if (queryParams.location || queryParams.country || queryParams.title) {
+      destinations = await destinationModel
+        .find(queryParams)
+        .hint({ location: 1 })
+        .exec();
+    } else {
+      destinations = await destinationModel.find();
+    }
+    console.timeEnd();
     logger.info("getAllDestinations: ", destinations);
     res.json(destinations);
   } catch (error) {
